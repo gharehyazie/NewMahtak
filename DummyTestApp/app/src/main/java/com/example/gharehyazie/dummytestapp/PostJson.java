@@ -1,5 +1,8 @@
 package com.example.gharehyazie.dummytestapp;
 
+import android.content.Context;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.AsyncTask;
 
 import org.json.JSONException;
@@ -18,7 +21,13 @@ import java.net.URL;
 
 public class PostJson extends AsyncTask<String, String, String> {
 
+    public boolean isOnline(Context context) {
 
+        ConnectivityManager cm = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo netInfo = cm.getActiveNetworkInfo();
+        //should check null because in airplane mode it will be null
+        return (netInfo != null && netInfo.isConnected());
+    }
 
     public void postData(String first) {
         try {
@@ -32,7 +41,7 @@ public class PostJson extends AsyncTask<String, String, String> {
             JSONObject jsonObject = new JSONObject();
             // add String to server Table tags
             jsonObject.put("startdate", first);
-            jsonObject.put("enddate", "");
+            jsonObject.put("enddate", "s");
 
             DataOutputStream wr = new DataOutputStream(httpURLConnection.getOutputStream());
             wr.writeBytes(jsonObject.toString());
@@ -56,9 +65,7 @@ public class PostJson extends AsyncTask<String, String, String> {
 
     @Override
     protected String doInBackground(String... params) {
-            postData(params[0]);
-
-
+        postData(params[0]);
         return null;
     }
 

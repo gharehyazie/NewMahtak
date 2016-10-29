@@ -5,6 +5,10 @@ import android.content.SharedPreferences;
 import android.os.Build;
 import android.util.Log;
 
+import org.json.JSONObject;
+
+import java.io.StringWriter;
+import java.util.Map;
 import java.util.UUID;
 
 /**
@@ -14,38 +18,41 @@ import java.util.UUID;
 public class ToSharedPreferences {
 
     public static void generateUUID(Context context) {
-        Log.e("context",context.getApplicationInfo().toString());
+        Log.e("context", context.getClass().getSimpleName());
         SharedPreferences sharedPrefs = context.getSharedPreferences("deviceID", Context.MODE_PRIVATE);
         SharedPreferences.Editor ed;
-        if(!sharedPrefs.contains("initialized")){
+        if (!sharedPrefs.contains("UUID")) {
             ed = sharedPrefs.edit();
-
-            //Indicate that the default shared prefs have been set
-            ed.putBoolean("initialized", true);
             String uniqueID = String.valueOf(UUID.randomUUID());
             ed.putString("UUID", uniqueID);
+            ed.putString("Model", Build.MODEL);
+            ed.putString("Brand", Build.BRAND);
+            ed.putString("Manufacturer", Build.MANUFACTURER);
+            ed.putString("SDK int", String.valueOf(Build.VERSION.SDK_INT));
             ed.commit();
         }
-
-        Log.e("UUID sharedP",sharedPrefs.getString("UUID","doesn't exist"));
-        putStringInPreferences(context, "Model",Build.MODEL,"deviceID");
-        Log.e("Model sharedP",sharedPrefs.getString("Model","doesn't exist"));
     }
 
+    public void putStringInPreferences(Context context, String key, String value, String FileKey) {
+        generateUUID(context);
 
-
-    public static void putStringInPreferences(Context context,  String key,String value, String FileKey) {
         SharedPreferences sharedPreferences = context.getSharedPreferences(FileKey, Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putString(key, value);
         editor.commit();
+
+
     }
 
-    public static String getStringFromPreferences(Context context, String defaultValue, String key, String pKey) {
+    public String getStringFromPreferences(Context context, String defaultValue, String key, String pKey) {
         SharedPreferences sharedPreferences = context.getSharedPreferences(pKey, Context.MODE_PRIVATE);
         String temp = sharedPreferences.getString(key, defaultValue);
         return temp;
     }
 
 
+    public  Map<String, ?> getAll(Context context, String pKey) {
+        SharedPreferences sharedPreferences = context.getSharedPreferences(pKey, Context.MODE_PRIVATE);
+        return sharedPreferences.getAll();
+    }
 }

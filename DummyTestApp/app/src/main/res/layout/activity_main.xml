@@ -11,54 +11,42 @@
     tools:context="com.example.gharehyazie.dummytestapp.MainActivity">
 
     <TextView
+        android:id="@+id/textView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Hello World!"
-        android:id="@+id/textView" />
+        android:text="Hello World!" />
 
     <Button
-        android:text="Go to Activity 2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="27dp"
         android:id="@+id/btnAct2"
-        android:layout_below="@+id/textView"
-        android:layout_toRightOf="@+id/textView"
-        android:layout_toEndOf="@+id/textView"
-        android:onClick="goAct2" />
-
-    <Button
-        android:text="Go to Activity 3"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="11dp"
+        android:layout_below="@+id/textView"
+        android:layout_marginTop="27dp"
+        android:layout_toEndOf="@+id/textView"
+        android:layout_toRightOf="@+id/textView"
+        android:onClick="goAct2"
+        android:text="Go to Activity 2" />
+
+    <Button
         android:id="@+id/btnAct3"
-        android:layout_below="@+id/btnAct2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_alignLeft="@+id/btnAct2"
         android:layout_alignStart="@+id/btnAct2"
-        android:onClick="goAct3" />
+        android:layout_below="@+id/btnAct2"
+        android:layout_marginTop="11dp"
+        android:onClick="goAct3"
+        android:text="Go to Activity 3" />
 
     <Button
-        android:text="Go to Activity 4"
+        android:id="@+id/btnAct4"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="11dp"
-        android:id="@+id/btnAct4"
-        android:layout_below="@+id/btnAct3"
         android:layout_alignLeft="@+id/btnAct3"
         android:layout_alignStart="@+id/btnAct3"
-        android:onClick="goAct4" />
+        android:layout_below="@+id/btnAct3"
+        android:layout_marginTop="11dp"
+        android:onClick="goAct4"
+        android:text="Go to Activity 4" />
 
-    <Button
-        android:text="send test"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/btnAct4"
-        android:layout_alignRight="@+id/btnAct4"
-        android:layout_alignEnd="@+id/btnAct4"
-        android:layout_marginRight="24dp"
-        android:layout_marginEnd="24dp"
-        android:layout_marginTop="22dp"
-        android:id="@+id/sendTest"
-        android:onClick="sendtest"/>
 </RelativeLayout>

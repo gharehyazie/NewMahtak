@@ -1,7 +1,6 @@
 package com.example.gharehyazie.dummytestapp;
 
 import android.content.Intent;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
@@ -11,9 +10,10 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        LifeCycleReporter reporter = new LifeCycleReporter();
+        getApplication().registerActivityLifecycleCallbacks(reporter);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        new ToSharedPreferences().generateUUID(this);
     }
 
     public void goAct2(View view) {
@@ -31,19 +31,4 @@ public class MainActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
-    public void sendtest(View view) {
-
-        StringBuilder deviceInfo = new StringBuilder();
-        deviceInfo.append(Build.MODEL )
-                .append(Build.VERSION.SDK_INT )
-                .append(Build.VERSION.RELEASE )
-                .append(Build.BRAND )
-                .append(Build.MANUFACTURER)
-                .append(Build.SERIAL)
-                .append(Build.TIME);
-
-        System.out.println(deviceInfo.toString());
-        new PostJson().execute(deviceInfo.toString());
-
-    }
 }
