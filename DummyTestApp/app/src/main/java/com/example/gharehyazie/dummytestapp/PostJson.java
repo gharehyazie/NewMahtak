@@ -1,9 +1,15 @@
 package com.example.gharehyazie.dummytestapp;
 
+/**
+ * Created by Mohsen on 10/18/2016.
+ * PostJson class sends post request that contains the app usage log as json to server data base
+ */
+
 import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.AsyncTask;
+import android.util.Log;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -15,21 +21,31 @@ import java.net.MalformedURLException;
 import java.net.ProtocolException;
 import java.net.URL;
 
-/**
- * Created by Mohsen on 10/18/2016.
- */
-
 public class PostJson extends AsyncTask<String, String, String> {
 
+    /**
+     * Is online boolean.
+     *
+     * @param context the context of the class that the method is called
+     * @return the boolean : true if device is online and false if devise is online
+     */
     public boolean isOnline(Context context) {
 
         ConnectivityManager cm = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo netInfo = cm.getActiveNetworkInfo();
-        //should check null because in airplane mode it will be null
         return (netInfo != null && netInfo.isConnected());
     }
 
-    public void postData(String first) {
+    /**
+     * Post data.
+     *
+     * @param first the first is a string that will be sent to server
+     */
+    public String postData(String first) {
+        /**
+         * using android httpURLConnection sends a post request with json body to the URL
+         */
+        String respond=null;
         try {
             URL url = new URL("http://46.101.146.4/");
             HttpURLConnection httpURLConnection = (HttpURLConnection) url.openConnection();
@@ -38,18 +54,17 @@ public class PostJson extends AsyncTask<String, String, String> {
             httpURLConnection.setRequestProperty("Content-Type", "application/json"); // data type = json
             httpURLConnection.connect();
 
-            JSONObject jsonObject = new JSONObject();
-            // add String to server Table tags
-            jsonObject.put("startdate", first);
-            jsonObject.put("enddate", "s");
 
             DataOutputStream wr = new DataOutputStream(httpURLConnection.getOutputStream());
-            wr.writeBytes(jsonObject.toString());
+            wr.writeBytes(first);
             wr.flush();
             wr.close();
 
-            String respond = String.valueOf(httpURLConnection.getResponseCode());
-            System.out.println(respond);
+            /**
+             *print the post request responde to Log.e
+             */
+            respond = String.valueOf(httpURLConnection.getResponseCode());
+            Log.e("postRespond", respond);
 
         } catch (ProtocolException e) {
             e.printStackTrace();
@@ -57,16 +72,14 @@ public class PostJson extends AsyncTask<String, String, String> {
             e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
-        } catch (JSONException e) {
-            e.printStackTrace();
         }
-
+        return respond;
     }
 
     @Override
     protected String doInBackground(String... params) {
-        postData(params[0]);
-        return null;
+        String respond=postData(params[0]);
+        return respond;
     }
 
 

@@ -14,6 +14,7 @@ public class MainActivity extends AppCompatActivity {
         getApplication().registerActivityLifecycleCallbacks(reporter);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
     }
 
     public void goAct2(View view) {
