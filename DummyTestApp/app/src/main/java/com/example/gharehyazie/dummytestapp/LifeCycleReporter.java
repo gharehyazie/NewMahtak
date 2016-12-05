@@ -2,13 +2,6 @@ package com.example.gharehyazie.dummytestapp;
 
 /**
  * Created by Mohsen on 10/25/2016.
- * <p>
- * This class is for logging activities life cycle and seconds each activity is used
- * and if devise is online send data to server and if not save data to shared preferences
- * to send next time the device is online.
- * also at first time app is installed it creates a unique UUID for each device and
- * save it to the shared preferences.
- * <p>
  */
 
 
@@ -26,6 +19,15 @@ import java.util.Map;
 
 /**
  * The type Life cycle reporter.
+ * This class is for logging activities life cycle and seconds each activity is
+ * used.
+ * <p>
+ * If device was online sends data to server and if not save data to
+ * shared preferences to send it next time the device is online.
+ * If the app was terminated it will save the data to shared preferences
+ * and send it next time.
+ * Also at first time app is installed it creates a unique UUID for each
+ * device and save it to the shared preferences.
  */
 public class LifeCycleReporter implements Application.ActivityLifecycleCallbacks {
 
@@ -36,7 +38,7 @@ public class LifeCycleReporter implements Application.ActivityLifecycleCallbacks
     Map<String, Long> timeMap = new LinkedHashMap<>();
 
     /**
-     * name of the app main calls for using in onDestroyed method
+     * Name of the app main calls for using in onDestroyed method.
      */
     Context mainActivity = null;
 
@@ -45,42 +47,47 @@ public class LifeCycleReporter implements Application.ActivityLifecycleCallbacks
     }
 
     /**
-     * @param activity = context that contains the info of the onStarted activity.
-     *                 mainActivity sets app main activity name.
+     * Logs the started activities and time of them and the date and time which
+     * app used.
+     * <p>
+     * If the app is just installed at first time it opens Generates device UUID.
+     * If last time app was terminated creates Json body for post
+     *
+     * @param activity Activity that is Started.
      */
     @Override
     public void onActivityStarted(Activity activity) {
         SHP = new ToSharedPreferences();
 
         /**
-         * If condition works when app installed and opend for the first time
+         * If condition works when app installed and opened for the first time
          */
         if (mainActivity == null) {
             mainActivity = activity;
             if (SHP.getStringFromPreferences(mainActivity, "0", mainActivity.getClass().getSimpleName(), "temp") != "0") {
                 SHP.putStringInPreferences(mainActivity, "Terminated", "true", "temp");
-                sendOrSave();
+                createPostJsonBody();
             }
             new ToSharedPreferences().generateUUID(activity);
-            /**
-             * sets the current date
-             */
+
             SHP.putStringInPreferences(mainActivity, "date", String.valueOf(new Date((Long) System.currentTimeMillis())), "temp");
         }
         /**
-         * sets the onStart time
+         * Sets the onStart time
          */
         timeMap.put(activity.getClass().getSimpleName(), System.currentTimeMillis());
     }
 
     @Override
     public void onActivityResumed(Activity activity) {
-//        Log.e(activity.getClass().getSimpleName(), "onResume()");
     }
 
     /**
-     * @param activity = context that contains the info of the onStarted activity.
-     *                 difference calculates the time in seconds form on start to on pause of activity and add the value to the
+     * Logs the Activity paused time and time it was on resume and save it in
+     * shared preferences.
+     * <p>
+     *
+     * @param activity Activity that is Paused.
      */
     @Override
     public void onActivityPaused(Activity activity) {
@@ -92,31 +99,40 @@ public class LifeCycleReporter implements Application.ActivityLifecycleCallbacks
 
     @Override
     public void onActivitySaveInstanceState(Activity activity, Bundle outState) {
-//        Log.e(activity.getClass().getSimpleName(), "onSaveInstanceState(Bundle)");
     }
 
     @Override
     public void onActivityStopped(Activity activity) {
-//        Log.e(activity.getClass().getSimpleName(), "onStop()");
     }
 
+    /**
+     * If the destroyed activity be the app mainActivity calls the createPostJsonBody method
+     * and unregisters lifeCycle class.
+     *
+     * @param activity Activity that is Destroyed
+     */
     @Override
     public void onActivityDestroyed(Activity activity) {
         /**
-         * condition checks if the app main activity is closed meaning the app is closed
+         * Condition checks if the app main activity is closed meaning the app is closed
          */
 
         if (mainActivity.equals(activity)) {
-            sendOrSave();
+            createPostJsonBody();
 
             /**
-             * unregisters the ActivityLifecycleCallbacks for preventing duplicate data on the next start of app
+             * Unregisters the ActivityLifecycleCallbacks for preventing duplicate data on the next start of app
              */
             activity.getApplication().unregisterActivityLifecycleCallbacks(this);
         }
     }
 
-    public void sendOrSave() {
+    /**
+     * Joins the Device ID and app Log into a JSONObject.
+     * If the device was offline save it for next time online and if was online
+     * sends current and previous data.
+     */
+    public void createPostJsonBody() {
         /**
          * save both deviceID from shared preferences and temp to result JSONObject
          */
@@ -128,7 +144,7 @@ public class LifeCycleReporter implements Application.ActivityLifecycleCallbacks
         JSONObject result = new JSONObject(lifeCycleID);
 
         /**
-         * when device is online  checks if there is any on sent data and send them + current data
+         * When device is online  checks if there is any on sent data and send them + current data
          * and if device is offline saves the data to shared preferences for next time bye file key "data"
          */
         if (new PostJson().isOnline(mainActivity)) {

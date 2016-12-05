@@ -1,0 +1,12 @@
+<h2 class="page-header">Applications</h2>
+<p>Your Applications</p>
+<p id="data"></p>
+<div class="entry">
+  {{#if apps}}
+    
+    {{#each apps}}
+    {{@key}}: AppName= {{this.appName}} , CompanyDomain={{this.companyDomain}} , AppVersion={{this.appVersion}}</br> </br>
+
+{{/each}}
+  {{/if}}
+</div>
