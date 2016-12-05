@@ -18,6 +18,9 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void goAct2(View view) {
+        //addCustomRecord test example
+        new ToSharedPreferences().addCustomRecord(this,"activity 2 button","pressed");
+
         Intent intent = new Intent(this, Main2Activity.class);
         startActivity(intent);
     }

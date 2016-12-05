@@ -31,6 +31,7 @@ public class ToSharedPreferencesTest {
     public void setUp() throws Exception {
         shp = new ToSharedPreferences();
         context = RuntimeEnvironment.application;
+        shp.generateUUID(context);
     }
 
     @Test
@@ -38,7 +39,7 @@ public class ToSharedPreferencesTest {
         //Arrange
 
         //Act
-        shp.generateUUID(context);
+
 
         //Assert
         assertNotNull("not UUID", shp.getStringFromPreferences(context, null, "UUID", "deviceID"));

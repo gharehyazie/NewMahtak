@@ -63,7 +63,7 @@ public class LifeCycleReporterTest {
     @Test
     public void onDestroy() throws Exception {
 
-        NetworkInfo networkInfo =  ShadowNetworkInfo.newInstance(NetworkInfo.DetailedState.CONNECTED, ConnectivityManager.TYPE_WIFI, 0, false, false);
+        NetworkInfo networkInfo = ShadowNetworkInfo.newInstance(NetworkInfo.DetailedState.CONNECTED, ConnectivityManager.TYPE_WIFI, 0, false, false);
         shadowConnectivityManager.setActiveNetworkInfo(networkInfo);
 
         controller.pause();
