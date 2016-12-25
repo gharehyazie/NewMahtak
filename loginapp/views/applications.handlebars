@@ -1,12 +1,44 @@
 <h2 class="page-header">Applications</h2>
 <p>Your Applications</p>
 <p id="data"></p>
-<div class="entry">
-  {{#if apps}}
-    
-    {{#each apps}}
-    {{@key}}: AppName= {{this.appName}} , CompanyDomain={{this.companyDomain}} , AppVersion={{this.appVersion}}</br> </br>
 
-{{/each}}
-  {{/if}}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+{{#if apps}}
+<div class="table-responsive">
+<table  class="table">
+   <tbody>
+      {{#each apps}}
+      <tr>
+         <td style="width: 40%;">
+           <p style="text-align:left;">
+                 <font size=4> <b>{{this.appName}}</b> </font>
+              <span style="float:right;">{{this.appVersion}}</span>
+           </p>
+           <font color="#9B9A9A"> {{this.companyDomain}} </font>
+         </td>
+
+         <td style="text-align:right;">
+           <div class="btn-group">
+
+           <a class="input-group-addon" href="#">
+           <i class="fa fa-pencil-square-o fa-2x" aria-hidden="true"></i>
+           </a>
+
+           <a class="input-group-addon" href="#">
+           <i class="fa fa-cloud-download fa-2x" aria-hidden="true"></i>
+           </a>
+
+           <a class="input-group-addon" href="#">
+           <i class="fa fa-area-chart fa-2x" aria-hidden="true"></i>  
+           </a>
+
+           </div>
+         </td>
+           
+      </tr>
+      {{/each}}
+   </tbody>
+</table>
 </div>
+{{/if}}

@@ -20,12 +20,16 @@ MongoClient.connect(url, function (err, db) {
       if (err) {
         console.log(err)
       }
-          db.close()
+      collection.find({}).sort({_id:-1}).limit(1).toArray(function(err, results){
+      res = JSON.stringify(results)
+    console.log(res)
+    response.end(res)
+})
+      db.close()
     })
   }
 })
 })
-response.end('Done')
 }
 const server = http.createServer(requestHandler)
 server.listen(port, (err) => {  
@@ -34,3 +38,4 @@ server.listen(port, (err) => {
   }
   console.log(`server is listening on ${port}`)
 })
+

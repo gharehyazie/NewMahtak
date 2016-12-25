@@ -5,18 +5,55 @@
         <div class="alert alert-danger">{{msg}}</div>
       {{/each}}
 {{/if}}
-<form method="post" action="/users/index">
+<form method="post" action="/users/addApp" id="addApp-form">
   <div class="form-group">
     <label>Application Name</label>
-    <input type="text" class="form-control" name="appName" placeholder="Application Name">
+    <input type="text" class="form-control" name="appName" placeholder="Application Name" >
   </div>
   <div class="form-group">
     <label>Company Domain</label>
-    <input type="text" class="form-control" name="companyDomain" placeholder="Company Domain">
+    <input type="text" class="form-control" name="companyDomain" placeholder="Company Domain" >
   </div>
 <div class="form-group">
     <label>Application Version</label>
-    <input type="text" class="form-control" name="appVersion" placeholder="Application Version">
+    <input type="text" class="form-control" name="appVersion" placeholder="Application Version" >
   </div>
-  <button type="submit" class="btn btn-default">Submit</button>
+    <div class="form-group">
+      <button type="submit" class="btn btn-default">Submit</button>
+    </div>
 </form>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.16.0/jquery.validate.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.16.0/additional-methods.min.js"></script>
+
+<script language='javascript'type='text/javascript'>
+    $(function() {
+
+    $.validator.setDefaults({
+        errorClass: 'help-block',
+        highlight: function(element) {
+            $(element)
+                .closest('.form-group')
+                .addClass('has-error');
+        },
+        unhighlight: function(element) {
+            $(element)
+                .closest('.form-group')
+                .removeClass('has-error')
+                .addClass('has-success');
+        },
+        errorPlacement: function (error, element) {
+            error.insertAfter(element);
+        }
+    });
+
+    $("#addApp-form").validate({
+        rules: {
+            appName: "required",
+            companyDomain: "required",
+            appVersion: "required"
+        }
+    });
+});
+</script>
