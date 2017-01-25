@@ -1,9 +1,8 @@
 <h2 class="page-header">Applications</h2>
+<body>
 <p>Your Applications</p>
 <p id="data"></p>
-
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-
 {{#if apps}}
 <div class="table-responsive">
 <table  class="table">
@@ -20,17 +19,17 @@
 
          <td style="text-align:right;">
            <div class="btn-group">
-
-           <a class="input-group-addon" href="#">
-           <i class="fa fa-pencil-square-o fa-2x" aria-hidden="true"></i>
+            
+           <a class="input-group-addon"  href="/Build/{{this.appName}}">
+           <i type="button" class="fa fa-pencil-square-o fa-2x" aria-hidden="true" id="build" title="Build"></i>
            </a>
 
            <a class="input-group-addon" href="#">
-           <i class="fa fa-cloud-download fa-2x" aria-hidden="true"></i>
+           <i class="fa fa-cloud-download fa-2x" aria-hidden="true" id="Download" title="Download"></i>
            </a>
 
-           <a class="input-group-addon" href="#">
-           <i class="fa fa-area-chart fa-2x" aria-hidden="true"></i>  
+           <a class="input-group-addon" href="/MahtakDashboard">
+           <i class="fa fa-area-chart fa-2x" aria-hidden="true" id="Dashboard" title="Dashboard"></i>  
            </a>
 
            </div>
@@ -42,3 +41,4 @@
 </table>
 </div>
 {{/if}}
+</body>
