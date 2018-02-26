@@ -1,4 +1,5 @@
 var mongoose = require('mongoose');
+mongoose.Promise = global.Promise;
 
 // Application Schema
 var ApplicationSchema = mongoose.Schema({
@@ -8,7 +9,7 @@ var ApplicationSchema = mongoose.Schema({
 	appName: {
 		type: String
 	},
-	companyDomain: {
+	PACKAGE_NAME: {
 		type: String
 	},
 	appVersion: {

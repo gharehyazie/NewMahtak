@@ -6,16 +6,16 @@ var LocalStrategy = require('passport-local').Strategy;
 var User = require('../models/user');
 var Application = require('../models/application');
 // Register
-router.get('/register', function(req, res) {
-    res.render('register');
-});
+// router.get('/register', function(req, res) {
+//     res.render('register');
+// });
 
 // Login
 router.get('/login', function(req, res) {
     res.render('login');
 });
 
-// Checks form username in data base 
+// Checks form username in data base for Validation
 router.post('/checkUsername', function(req, res) {
     var username = req.body.username;
     User.getUserByUsername(username, function(err, user) {
@@ -28,7 +28,7 @@ router.post('/checkUsername', function(req, res) {
     });
 });
 
-// Checks form Email in data base 
+// Checks form Email in data base for Validation
 router.post('/checkEmail', function(req, res) {
     var email = req.body.email;
     User.getUserByEmail(email, function(err, user) {
@@ -84,36 +84,37 @@ router.post('/register', function(req, res) {
 // Add App
 router.post('/addApp', function(req, res) {
     var appName = req.body.appName;
-    var companyDomain = req.body.companyDomain;
+    var PACKAGE_NAME = req.body.PACKAGE_NAME;
     var appVersion = req.body.appVersion;
 
     // Validation
-    req.checkBody('appName', 'Application Name is require').notEmpty();
-    req.checkBody('companyDomain', 'Company Domain is required').notEmpty();
-    req.checkBody('appVersion', 'Aplication Version is required').notEmpty();
+    // req.checkBody('appName', 'Application Name is require').notEmpty();
+    // req.checkBody('PACKAGE_NAME', 'PACKAGE_NAME is required').notEmpty();
+    // req.checkBody('appVersion', 'Aplication Version is required').notEmpty();
 
-    var errors = req.validationErrors();
+    // var errors = req.validationErrors();
 
-    if (errors) {
-        res.render('index', {
-            errors: errors
-        });
-    } else {
-        var newApplication = new Application({
-            username: req.user.username,
-            appName: appName,
-            companyDomain: companyDomain,
-            appVersion: appVersion
-        });
-        Application.addApplication(newApplication, function(err, application) {
-            if (err) throw err;
-            console.log(application);
-        });
+    // if (errors) {
+    //     res.render('index', {
+    //         errors: errors
+    //     });
+    // } else {
+    var newApplication = new Application({
+        "username": req.user.username,
+        "appName": appName,
+        "PACKAGE_NAME": PACKAGE_NAME,
+        "appVersion": appVersion
+    });
+    Application.addApplication(newApplication, function(err, application) {
+        if (err) throw err;
+        // console.log(application);
+        // req.flash('success_msg', 'Your App added');
 
-        req.flash('success_msg', 'Your App added');
-
-        res.redirect('/');
-    }
+        console.log("done");
+        res.write("");
+        res.end();
+    });
+    // }
 });
 
 passport.use(new LocalStrategy(
@@ -145,7 +146,7 @@ passport.deserializeUser(function(id, done) {
         done(err, user);
     });
 });
-
+// logging in 
 router.post('/login',
     passport.authenticate('local', { successRedirect: '/', failureRedirect: '/users/login', failureFlash: true }),
     function(req, res) {

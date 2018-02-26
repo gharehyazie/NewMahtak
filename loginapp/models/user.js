@@ -1,5 +1,6 @@
 var mongoose = require('mongoose');
 var bcrypt = require('bcryptjs');
+mongoose.Promise = global.Promise;
 
 // User Schema
 var UserSchema = mongoose.Schema({
@@ -15,6 +16,10 @@ var UserSchema = mongoose.Schema({
     },
     name: {
         type: String
+    },
+    defaultLng:{
+        type: String,
+        default: 'en'
     }
 });
 
@@ -42,6 +47,10 @@ module.exports.getUserByEmail = function(email, callback) {
 module.exports.getUserById = function(id, callback) {
     User.findById(id, callback);
 }
+
+// module.exports.getLngById = function(id, callback) {
+//     User.findById(id, callback);
+// }
 
 module.exports.comparePassword = function(candidatePassword, hash, callback) {
     bcrypt.compare(candidatePassword, hash, function(err, isMatch) {

@@ -4,7 +4,7 @@
   "description": "simple login system ",
   "main": "app.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "mocha"
   },
   "author": "Mohsen",
   "license": "ISC",
@@ -18,10 +18,16 @@
     "express-messages": "*",
     "express-session": "*",
     "express-validator": "*",
+    "i18next": "^8.4.3",
     "mongodb": "*",
     "mongoose": "*",
     "passport": "*",
     "passport-http": "*",
     "passport-local": "*"
-   }
+  },
+  "devDependencies": {
+    "chai": "^3.5.0",
+    "mocha": "^3.2.0",
+    "supertest": "^3.0.0"
+  }
 }

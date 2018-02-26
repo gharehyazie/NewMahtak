@@ -2,18 +2,150 @@
 <html>
 
 <head>
-    <title>RazorFlow Quick Start</title>
-    <link rel="stylesheet" type="text/css" href="css/razorflow.min.css">
+    <title>Mahtak Dashboard</title>
     <meta name="viewport" content="initial-scale=1.0, user-scalable=no">
     <script type="text/javascript" src="js/jquery.min.js"></script>
-    <script type="text/javascript" src="js/razorflow.min.js"></script>
-    <script type="text/javascript" src="js/razorflow.devtools.min.js"></script>
-    <script type="text/javascript" src="js/dashboard_app.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.5.0/Chart.min.js"></script>
+
 </head>
 
 <body>
-    <!-- Don't delete this div. This is where RazorFlow will get rendered. -->
-    <div id="dbTarget" style="position:relative;" class="rf"></div>
+    <!--<canvas id="myChart" style="display: block;width: 400px;height: 400px;" width="690" height="690"></canvas>
+    <canvas id="myChart2" style="display: block;width: 400px;height: 400px;" width="690" height="690"></canvas>
+    <canvas id="myChart3" style="display: block;width: 400px;height: 400px;" width="690" height="690"></canvas>-->
+
+    <form id='form1' style="position:relative">
+        <div id='d1' style="position:absolute; top:0px; left:0px; z-index:1">
+            <canvas id='myChart' width='200px' height='100px'>
+              Your browser does not support HTML5 Canvas.
+        </canvas>
+        </div>
+        <div id='d2' style="position:absolute; top:0px; left:12px; z-index:2">
+            <canvas id='myChart2' width='300' height='200'>
+              Your browser does not support HTML5 Canvas.
+        </canvas>
+        </div>
+        <div id='d3' style="position:absolute; top:0px; left:300px; z-index:3">
+            <canvas id='myChart3' width='200' height='100'>
+              Your browser does not support HTML5 Canvas.
+        </canvas>
+        </div>
+    </form>
+
 </body>
+<script>
+    $.ajax({
+        url: '/deviceType',
+        type: 'POST',
+        data: '',
+        contentType: 'application/json; charset-utf-8',
+        dataType: 'json',
+        success: function(data) {
+            console.log(data);
+            var ctx = document.getElementById("myChart").getContext("2d");
+            var myPieChart = new Chart(ctx, {
+                type: 'pie',
+                data: {
+                    labels: data.types,
+                    datasets: [{
+                        data: data.percent,
+                        backgroundColor: [
+                            "#FF6384",
+                            "#36A2EB",
+                            "#FFCE56"
+                        ],
+                        hoverBackgroundColor: [
+                            "#FF6384",
+                            "#36A2EB",
+                            "#FFCE56"
+                        ]
+                    }]
+                },
+                options: {
+                    paddingLeft: 100,
+                    paddingRight: 100,
+                    paddingTop: 100,
+                    paddingBottom: 100
+                }
+            });
+        },
+        error: function(xhr, status, error) {
+            console.log(error);
+        }
+    });
+    //daily Users chart 
+    $.ajax({
+        url: '/dailyUsers',
+        type: 'POST',
+        data: '',
+        contentType: 'application/json; charset-utf-8',
+        dataType: 'json',
+        success: function(data) {
+            console.log(data);
+            var ctx2 = document.getElementById("myChart2").getContext("2d");
+            var myChart2 = new Chart(ctx2, {
+                type: 'line',
+                data: {
+                    labels: data.dates,
+                    datasets: [{
+                        label: 'Daily Users',
+                        data: data.usersNumber,
+                        backgroundColor: [
+                            'rgba(255, 99, 132, 0.2)',
+                            'rgba(54, 162, 235, 0.2)',
+                            'rgba(255, 206, 86, 0.2)',
+                            'rgba(75, 192, 192, 0.2)',
+                            'rgba(153, 102, 255, 0.2)',
+                            'rgba(255, 159, 64, 0.2)'
+                        ],
+                        borderColor: [
+                            'rgba(255,99,132,1)',
+                            'rgba(54, 162, 235, 1)',
+                            'rgba(255, 206, 86, 1)',
+                            'rgba(75, 192, 192, 1)',
+                            'rgba(153, 102, 255, 1)',
+                            'rgba(255, 159, 64, 1)'
+                        ],
+                        borderWidth: 2
+                    }]
+                },
+                options: {
+                    scales: {
+                        yAxes: [{
+                            ticks: {
+                                beginAtZero: true
+                            }
+                        }]
+                    }
+                }
+            });
+            // if (data.dates.length < 31) {
+            //     chart.setLabels(data.dates);
+            //     chart.addSeries('totalUsers', 'Total Users', data.usersNumber, { seriesDisplayType: 'area' });
+            // } else {
+            //     chart.setLabels(data.dates.slice(0, 30));
+            //     chart.addSeries('totalUsers', 'Total Users', data.usersNumber.slice(0, 30), { seriesDisplayType: 'area' });
+            // }
+        },
+        error: function(xhr, status, error) {
+            console.log(error);
+        }
+    });
+
+
+
+    var ctx3 = document.getElementById("myChart3").getContext("2d");
+    var myChart3 = new Chart(ctx3, {
+        type: 'line',
+        data: {
+            labels: ['M', 'T', 'W', 'T', 'F', 'S', 'S'],
+            datasets: [{
+                label: 'apples',
+                data: [12, 19, 3, 17, 6, 3, 7],
+                backgroundColor: "rgba(153,255,51,0.4) "
+            }]
+        }
+    });
+</script>
 
 </html>
